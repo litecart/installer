@@ -15,7 +15,7 @@ To install the latest version of LiteCart from a terminal window, do the followi
 
 2. Download and execute the installer:
 
-    wget wget -O - https://raw.githubusercontent.com/litecart/installer/master/install.sh | bash
+    wget -O - https://raw.githubusercontent.com/litecart/installer/master/install.sh | bash
 
 3. Open your browser and access your webfolder:
 
