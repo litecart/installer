@@ -9,6 +9,6 @@ mv litecart-master/public_html/* ./
 
 # Remove leftovers
 rmdir litecart-master/public_html litecart-master
-rm master.zip install.sh
+rm master.zip
 
 echo Done
