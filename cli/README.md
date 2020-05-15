@@ -9,20 +9,30 @@
 
 To install the latest version of LiteCart from a terminal window, do the following:
 
-1. Navigate to the folder reserved for your web content.
+1. Download and execute the installer:
 
-    Example: cd "/var/www/mydomain.com/public_html"
-
-2. Download and execute the installer:
+  **Using wget**
 
     wget -O - https://raw.githubusercontent.com/litecart/installer/master/cli/install.sh | bash
 
-  **Or**
+  **Or curl**
 
     curl -s https://raw.githubusercontent.com/litecart/installer/master/cli/install.sh | bash
 
-3. Open your browser and access your webfolder:
+2. Follow the instructions on the screen.
 
-    Example: http://domain.tld/install/
+-----------------------------------------------------------------------
 
-4. Follow the steps on the screen in your web browser.
+Note: You can predefine values passed to the install script:
+
+    ./install.sh --app_dir=... \
+                 --document_root=... \
+                 --db_server=... \
+                 --db_user=... \
+                 --db_password=... \
+                 --db_database=... \
+                 --db_prefix=... \
+                 --timezone=... \
+                 --admin_folder=... \
+                 --admin_user=... \
+                 --admin_password=...
