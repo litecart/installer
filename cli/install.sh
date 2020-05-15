@@ -139,7 +139,7 @@ if [[ -z $db_collation ]]; then
 fi
 
 if [ $http_client == "wget" ] ; then
-  current_time_zone="$(wget -q https://ipapi.co/timezone)"
+  current_time_zone="$(wget -qO- https://ipapi.co/timezone)"
 elif [ $http_client == "curl" ] ; then
   current_time_zone="$(curl -s https://ipapi.co/timezone)"
 fi
@@ -221,7 +221,7 @@ cd "$app_dir"
 # Download LiteCart
 echo "Downloading latest version of LiteCart..."
 if [ $http_client == "wget" ] ; then
-  wget -O litecart.zip -q "https://www.litecart.net/en/downloading?action=get&version=latest"
+  wget -qO litecart.zip "https://www.litecart.net/en/downloading?action=get&version=latest"
 elif [ $http_client == "curl" ] ; then
   curl -so litecart.zip "https://www.litecart.net/en/downloading?action=get&version=latest"
 else
@@ -238,6 +238,7 @@ echo "Cleaning up..."
 rmdir public_html/
 rm litecart.zip
 
+echo "Executing installation"
 php install/install.php \
   --db_server=$db_server \
   --db_database=$db_database \
@@ -252,4 +253,4 @@ php install/install.php \
   --development_type=$development_type
 
 # Return to current directory
-cd $current_dir
+cd "$current_dir"

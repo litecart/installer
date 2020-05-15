@@ -35,4 +35,5 @@ Note: You can predefine values passed to the install script:
                  --timezone=... \
                  --admin_folder=... \
                  --admin_user=... \
-                 --admin_password=...
+                 --admin_password=... \
+                 --development_type=...
