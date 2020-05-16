@@ -98,9 +98,9 @@ fi
 
 if [[ -z $db_server ]]; then
   echo
-  read -p "MySQL Hostname [localhost]: " db_server
+  read -p "MySQL Hostname [127.0.0.1]: " db_server
   if [[ ! $db_server ]]; then
-    db_server="localhost"
+    db_server="127.0.0.1"
   fi
 fi
 
@@ -239,18 +239,19 @@ rmdir public_html/
 rm litecart.zip
 
 echo "Executing installation"
-php install/install.php \
-  --db_server=$db_server \
-  --db_database=$db_database \
-  --db_user=$db_user \
-  --db_password=$db_password \
-  --db_prefix=$db_prefix \
-  --db_collation=$db_collation \
-  --db_timezone=$db_timezone \
-  --admin_folder=$admin_folder \
-  --admin_username=$admin_username \
-  --admin_password=$admin_password \
-  --development_type=$development_type
+echo "php install/install.php \\
+  --document_root=\"$document_root\" \\
+  --db_server=$db_server \\
+  --db_database=$db_database \\
+  --db_user=$db_user \\
+  --db_password=\"$db_password\" \\
+  --db_prefix=$db_prefix \\
+  --db_collation=$db_collation \\
+  --timezone=\"$timezone\" \\
+  --admin_folder=$admin_folder \\
+  --admin_username=$admin_username \\
+  --admin_password=\"$admin_password\" \\
+  --development_type=$development_type"
 
 # Return to current directory
 cd "$current_dir"
