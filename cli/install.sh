@@ -104,17 +104,17 @@ if [[ -z $db_server ]]; then
   fi
 fi
 
-if [[ -z $db_user ]]; then
+if [[ -z $db_username ]]; then
   echo
-  read -p "MySQL Username [root]: " db_user
-  if [[ ! $db_user ]]; then
-    db_user="root"
+  read -p "MySQL Username [root]: " db_username
+  if [[ ! $db_username ]]; then
+    db_username="root"
   fi
 fi
 
 if [[ -z "$db_password" ]]; then
   echo
-  read -p "MySQL Password for '$db_user': " db_password
+  read -p "MySQL Password for '$db_username': " db_password
 fi
 
 while [[ ! $db_database ]]; do
@@ -192,7 +192,7 @@ echo "Installation folder: $app_dir"
 echo "Document Root: $document_root"
 echo
 echo "MySQL Hostname: $db_server"
-echo "MySQL Username: $db_user"
+echo "MySQL Username: $db_username"
 echo "MySQL Database: $db_database"
 echo "MySQL Table Prefix: $db_prefix"
 echo "MySQL Collation: $db_collation"
@@ -243,7 +243,7 @@ echo "php install/install.php \\
   --document_root=\"$document_root\" \\
   --db_server=$db_server \\
   --db_database=$db_database \\
-  --db_user=$db_user \\
+  --db_username=$db_username \\
   --db_password=\"$db_password\" \\
   --db_prefix=$db_prefix \\
   --db_collation=$db_collation \\
