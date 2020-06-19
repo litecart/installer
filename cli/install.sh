@@ -222,7 +222,7 @@ fi
 
 # Extract application directory
 echo "Extracting files..."
-unzip litecart.zip
+unzip litecart.zip "public_html/*"
 mv public_html/* ./
 
 # Remove leftovers
