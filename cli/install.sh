@@ -230,7 +230,7 @@ echo "Cleaning up..."
 rmdir public_html/
 rm litecart.zip
 
-echo "Executing installation"
+echo "Executing installation..."
 php install/install.php \
   --document_root=\"$document_root\" \
   --db_server=$db_server \
@@ -243,7 +243,7 @@ php install/install.php \
   --admin_folder=$admin_folder \
   --admin_username=$admin_username \
   --admin_password=\"$admin_password\" \
-  --development_type=$development_type"
+  --development_type=$development_type
 
 # Return to current directory
 cd "$current_dir"
