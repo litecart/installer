@@ -231,18 +231,18 @@ rmdir public_html/
 rm litecart.zip
 
 echo "Executing installation"
-echo "php install/install.php \\
-  --document_root=\"$document_root\" \\
-  --db_server=$db_server \\
-  --db_database=$db_database \\
-  --db_username=$db_username \\
-  --db_password=\"$db_password\" \\
-  --db_prefix=$db_prefix \\
-  --db_collation=$db_collation \\
-  --timezone=\"$timezone\" \\
-  --admin_folder=$admin_folder \\
-  --admin_username=$admin_username \\
-  --admin_password=\"$admin_password\" \\
+php install/install.php \
+  --document_root=\"$document_root\" \
+  --db_server=$db_server \
+  --db_database=$db_database \
+  --db_username=$db_username \
+  --db_password=\"$db_password\" \
+  --db_prefix=$db_prefix \
+  --db_collation=$db_collation \
+  --timezone=\"$timezone\" \
+  --admin_folder=$admin_folder \
+  --admin_username=$admin_username \
+  --admin_password=\"$admin_password\" \
   --development_type=$development_type"
 
 # Return to current directory
