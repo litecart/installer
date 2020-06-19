@@ -4,38 +4,30 @@
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Capture named arguments
-while [ $# -gt 0 ]; do
+while [[ $# -gt 0 ]]; do
   case "$1" in
-    --app_dir*|-d*)
-      if [[ "$1" != *=* ]]; then shift; fi # Value is next arg if no `=`
+    --app_dir*)
       app_dir="${1#*=}"
       ;;
-    --webpath*|-d*)
-      if [[ "$1" != *=* ]]; then shift; fi
+    --webpath*)
       webpath="${1#*=}"
       ;;
-    --db_server*|-dbhost*)
-      if [[ "$1" != *=* ]]; then shift; fi
+    --db_server*)
       db_server="${1#*=}"
       ;;
-    --db_database*|-dbname*)
-      if [[ "$1" != *=* ]]; then shift; fi
+    --db_database*)
       db_database="${1#*=}"
       ;;
-    --db_username*|-dbuser*)
-      if [[ "$1" != *=* ]]; then shift; fi
+    --db_username*)
       db_username="${1#*=}"
       ;;
-    --db_password*|-dbpwd*)
-      if [[ "$1" != *=* ]]; then shift; fi
+    --db_password*)
       db_password="${1#*=}"
       ;;
-    --db_prefix*|-dbprefix*)
-      if [[ "$1" != *=* ]]; then shift; fi
+    --db_prefix*)
       db_prefix="${1#*=}"
       ;;
-    --db_collation*|-dbcollation*)
-      if [[ "$1" != *=* ]]; then shift; fi
+    --db_collation*)
       db_collation="${1#*=}"
       ;;
     --help|-h)
@@ -52,9 +44,9 @@ while [ $# -gt 0 ]; do
 done
 
 # Check dependencies
-if [ -x "$(which wget)" ] ; then
+if [[ -x "$(which wget)" ]]; then
   http_client="wget"
-elif [ -x "$(which curl)" ]; then
+elif [[ -x "$(which curl)" ]]; then
   http_client="curl"
 else
   echo "Could not find either curl or wget, please install one." >&2
@@ -138,17 +130,17 @@ if [[ -z $db_collation ]]; then
   fi
 fi
 
-if [ $http_client == "wget" ] ; then
-  current_time_zone="$(wget -qO- https://ipapi.co/timezone)"
-elif [ $http_client == "curl" ] ; then
-  current_time_zone="$(curl -s https://ipapi.co/timezone)"
+if [[ $http_client == "wget" ]]; then
+  current_timezone="$(wget -qO- https://ipapi.co/timezone)"
+elif [[ $http_client == "curl" ]]; then
+  current_timezone="$(curl -s https://ipapi.co/timezone)"
 fi
 
-if [[ -z $time_zone ]]; then
+if [[ -z $timezone ]]; then
   echo
-  read -p "Store Timezone [$current_time_zone]: " time_zone
-  if [[ ! $time_zone ]]; then
-    time_zone=$current_time_zone
+  read -p "Store Timezone [$current_timezone]: " timezone
+  if [[ ! $timezone ]]; then
+    timezone=$current_timezone
   fi
 fi
 
@@ -197,7 +189,7 @@ echo "MySQL Database: $db_database"
 echo "MySQL Table Prefix: $db_prefix"
 echo "MySQL Collation: $db_collation"
 echo
-echo "Time Zone: $time_zone"
+echo "Time Zone: $timezone"
 echo
 echo "Admin Folder: $admin_folder"
 echo "Admin User: $admin_username"
@@ -210,7 +202,7 @@ while [[ ! $confirm =~ ^[yYnN]{1}$ ]]; do
   read -p "Is this information correct? [y/n]: " confirm
 done
 
-if [[ $confirm =~ ^[Nn]$ ]] ; then
+if [[ $confirm =~ ^[Nn]$ ]]; then
   echo "Mission aborted!"
   exit
 fi
@@ -220,9 +212,9 @@ cd "$app_dir"
 
 # Download LiteCart
 echo "Downloading latest version of LiteCart..."
-if [ $http_client == "wget" ] ; then
+if [[ $http_client == "wget" ]]; then
   wget -qO litecart.zip "https://www.litecart.net/en/downloading?action=get&version=latest"
-elif [ $http_client == "curl" ] ; then
+elif [[ $http_client == "curl" ]]; then
   curl -so litecart.zip "https://www.litecart.net/en/downloading?action=get&version=latest"
 else
   echo "Could not find either curl or wget, please install one." >&2
