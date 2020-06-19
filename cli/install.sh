@@ -167,7 +167,7 @@ done
 
 if [[ -z $development_type ]]; then
   echo
-  read -p "Development Type [standard]: " development_type
+  read -p "Development Type (standard|advanced) [standard]: " development_type
   if [[ ! $development_type ]]; then
     development_type=standard
   fi
