@@ -25,7 +25,7 @@ To install the latest version of LiteCart from a terminal window, do the followi
 
 Note: You can predefine values passed to the install script:
 
-    ./install.sh --app_dir=... \
+    ./install.sh --app_dir=/var/www/litecart/public_html/ \
                  --document_root=/var/www/litecart/public_html \
                  --db_server=localhost \
                  --db_user=johndoe \
