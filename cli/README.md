@@ -26,14 +26,14 @@ To install the latest version of LiteCart from a terminal window, do the followi
 Note: You can predefine values passed to the install script:
 
     ./install.sh --app_dir=... \
-                 --document_root=... \
-                 --db_server=... \
-                 --db_user=... \
-                 --db_password=... \
-                 --db_database=... \
-                 --db_prefix=... \
-                 --timezone=... \
-                 --admin_folder=... \
-                 --admin_user=... \
-                 --admin_password=... \
-                 --development_type=...
+                 --document_root=/var/www/litecart/public_html \
+                 --db_server=localhost \
+                 --db_user=johndoe \
+                 --db_password=mycatsname \
+                 --db_database=mylitecartdb \
+                 --db_prefix=lc_ \
+                 --timezone=Europe/London \
+                 --admin_folder=admin \
+                 --admin_user=admin \
+                 --admin_password=mydogsname \
+                 --development_type=standard
