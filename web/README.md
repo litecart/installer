@@ -31,4 +31,4 @@ To install the latest version of LiteCart from a terminal window, do the followi
 
     Example: http://www.mydomain.com/
 
-4. The application will be automatically and the installation wizard will open. Follow the steps on the screen.
+4. The latest version of LiteCart will be automatically downloaded and the installation wizard will open. Follow the steps on the screen.
