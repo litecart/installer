@@ -11,7 +11,7 @@ To install the latest version of LiteCart from a terminal window, do the followi
 
 1. Navigate to the folder reserved for your web content.
 
-    Example: cd "/var/www/mydomain.com/public_html"
+    Example: `cd "/var/www/mydomain.com/public_html"`
 
 2. Download the web installer:
 
@@ -23,7 +23,7 @@ To install the latest version of LiteCart from a terminal window, do the followi
 
     curl -s https://raw.githubusercontent.com/litecart/installer/master/web/index.php
 
-  **Or manually grab it the installer file and put  it in your web directory.**
+  **Or manually grab the installer file and put it in your web directory.**
 
     https://raw.githubusercontent.com/litecart/installer/master/web/index.php
 
@@ -31,4 +31,6 @@ To install the latest version of LiteCart from a terminal window, do the followi
 
     Example: http://www.mydomain.com/
 
-4. The latest version of LiteCart will be automatically downloaded and the installation wizard will open. Follow the steps on the screen.
+4. The latest version of LiteCart will be automatically downloaded and the installation wizard will open.
+
+Follow the steps on the screen.
