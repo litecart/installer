@@ -10,6 +10,14 @@
 
   try {
 
+    if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+      throw new Exception('You need at minimum PHP version 5.4 for installing LiteCart');
+    }
+
+    if (!extension_loaded('zip')) {
+      throw new Exception('This installer needs the PHP extension Zip installed in your PHP environment');
+    }
+
     echo "Downloading the application...\n";
     if (!$data = file_get_contents('https://www.litecart.net/en/downloading?version=latest&action=get')) {
       throw new Exception('Failed downloading the application');

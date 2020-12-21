@@ -23,9 +23,9 @@ To install the latest version of LiteCart from a terminal window, do the followi
 
     curl -s https://raw.githubusercontent.com/litecart/installer/master/web/index.php
 
-  **Or manually**
+  **Or manually grab it the installer file and put  it in your web directory.**
 
-    Grab it from https://raw.githubusercontent.com/litecart/installer/master/web/index.php and store it in the web directory.
+    https://raw.githubusercontent.com/litecart/installer/master/web/index.php
 
 3. Open your browser and access your webfolder:
 
