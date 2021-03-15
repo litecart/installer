@@ -9,8 +9,8 @@ while [[ $# -gt 0 ]]; do
     --app_dir*)
       app_dir="${1#*=}"
       ;;
-    --webpath*)
-      webpath="${1#*=}"
+    --document_root*)
+      document_root="${1#*=}"
       ;;
     --db_server*)
       db_server="${1#*=}"
@@ -29,6 +29,21 @@ while [[ $# -gt 0 ]]; do
       ;;
     --db_collation*)
       db_collation="${1#*=}"
+      ;;
+    --timezone*)
+      timezone="${1#*=}"
+      ;;
+    --admin_folder*)
+      admin_folder="${1#*=}"
+      ;;
+    --admin_username*)
+      admin_username="${1#*=}"
+      ;;
+    --admin_password*)
+      admin_password="${1#*=}"
+      ;;
+    --development_type*)
+      development_type="${1#*=}"
       ;;
     --help|-h)
       echo
@@ -113,6 +128,15 @@ while [[ ! $db_database ]]; do
   echo
   read -p "MySQL Database: " db_database
 done
+
+if [[ ! mysql -h $db_server -u $db_username -p $db_password -e 'use mydbname']]; then
+  while [[ ! $createdb =~ ^[yYnN]{1}$ ]]; do
+    read -p "Database does not exist. Shall we create it? [y/n]: " createdb
+  done
+  if [[ $createdb =~ ^[yY]{1}$ ]]; then
+    create database `$db_database` | mysql -h $db_server -u $db_username -p $db_password
+  fi
+fi
 
 if [[ -z $db_prefix ]]; then
   echo
