@@ -7,9 +7,9 @@
 
 # Instructions
 
-To install the latest version of LiteCart from your command line terminal window, do the following:
+To install the latest version of LiteCart straight from your command line interface. Do the following:
 
-1. Exececute the command:
+1. Open a terminal window and exececute the following command:
 
   **wget users**
 
