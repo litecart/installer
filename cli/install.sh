@@ -155,9 +155,9 @@ if [[ -z $db_collation ]]; then
 fi
 
 if [[ $http_client == "wget" ]]; then
-  current_timezone="$(wget -qO- https://ipapi.co/timezone)"
+  current_timezone = "$(wget -qO- https://ipapi.co/timezone)"
 elif [[ $http_client == "curl" ]]; then
-  current_timezone="$(curl -s https://ipapi.co/timezone)"
+  current_timezone = "$(curl -s https://ipapi.co/timezone)"
 fi
 
 if [[ -z $timezone ]]; then
