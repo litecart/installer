@@ -129,12 +129,14 @@ while [[ ! $db_database ]]; do
   read -p "MySQL Database: " db_database
 done
 
-if [[ ! mysql -h $db_server -u $db_username -p $db_password -e 'use mydbname']]; then
-  while [[ ! $createdb =~ ^[yYnN]{1}$ ]]; do
-    read -p "Database does not exist. Shall we create it? [y/n]: " createdb
-  done
-  if [[ $createdb =~ ^[yY]{1}$ ]]; then
-    create database `$db_database` | mysql -h $db_server -u $db_username -p $db_password
+if [[ -x mysql ]]; then
+  if [[ ! "$(mysql -h $db_server -u $db_username -p $db_password -e 'use mydbname')" ]]; then
+    while [[ ! $createdb =~ ^[yYnN]{1}$ ]]; do
+      read -p "Database does not exist. Shall we create it? [y/n]: " createdb
+    done
+    if [[ $createdb =~ ^[yY]{1}$ ]]; then
+      create database `$db_database` | mysql -h $db_server -u $db_username -p $db_password
+    fi
   fi
 fi
 
