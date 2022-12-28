@@ -244,6 +244,10 @@ else
   echo "Could not find either curl or wget, please install one." >&2
 fi
 
+if [ ! -f litecart.zip ]; then
+  echo "Download failed! Do we have write permissions?"
+fi
+
 # Extract application directory
 echo "Extracting files..."
 unzip litecart.zip "public_html/*"
