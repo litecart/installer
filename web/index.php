@@ -63,12 +63,16 @@
 
     $zip->close();
 
+    if (!is_file('install/install.php')) {
+      throw new Exception('Something went wrong extracting all files. If you need support, go to https://www.litecart.net/forums/');
+    }
+
     unlink($tmpfile);
 
     echo "\nExtraction complete!\n\n";
 
     if (php_sapi_name() == 'cli') {
-      echo "\nAccess https://yourdomain.tld/install/ from your web browser to begin the installation.";
+      echo "\nAccess https://yourdomain.tld/install/ from your web browser to begin the installation or type `php install/install.php --help` for command line options.";
       exit;
     }
 
