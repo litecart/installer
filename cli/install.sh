@@ -171,7 +171,12 @@ elif [ $http_client == "wget" ]; then
   current_timezone=$(curl -s https://ipapi.co/timezone)
 fi
 
-if [ -z $timezone ]; then
+while [[ ! $country =~ ^[A-Z]{2}$ ]]; do
+  echo
+  read -p "Store Country Code (Example: US): " country
+done
+
+if [ ! $timezone ]; then
   echo
   read -p "Store Timezone [$current_timezone]: " timezone
   if [ ! $timezone ]; then
@@ -225,6 +230,7 @@ echo "MySQL Database: $db_database"
 echo "MySQL Table Prefix: $db_prefix"
 echo "MySQL Collation: $db_collation"
 echo
+echo "Store Country: $country"
 echo "Time Zone: $timezone"
 echo
 echo "Admin Folder: $admin_folder"
@@ -279,6 +285,7 @@ php install.php \
   --db_password="$db_password" \
   --db_prefix=$db_prefix \
   --db_collation=$db_collation \
+  --country=$country \
   --timezone="$timezone" \
   --admin_folder=$admin_folder \
   --admin_username=$admin_username \
