@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define variables
-current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+current_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 # Capture named arguments
 while [[ $# -gt 0 ]]; do
@@ -59,10 +59,10 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Check dependencies
-if [[ -x "$(which wget)" ]]; then
-  http_client="wget"
-elif [[ -x "$(which curl)" ]]; then
+if [[ -x $(which curl) ]]; then
   http_client="curl"
+elif [[ -x $(which wget) ]]; then
+  http_client="wget"
 else
   echo "Could not find either curl or wget, please install one." >&2
   exit;
@@ -74,7 +74,7 @@ echo "##########################"
 echo "##  LiteCart Installer  ##"
 echo "##########################"
 
-while [[ -z $app_dir ]]; do
+while [ ! $app_dir ]; do
   echo
   read -p "Installation folder [$current_dir]: " app_dir
   if [[ ! $app_dir ]]; then
@@ -95,15 +95,15 @@ while [[ -z $app_dir ]]; do
   fi
 done
 
-if [[ -z $document_root ]]; then
+if [ ! $document_root ]; then
   echo
-  read -p "Document Root for '$app_dir' [$current_dir]: " document_root
+  read -p "Document Root for '$app_dir' [$app_dir]: " document_root
   if [[ ! $document_root ]]; then
-    document_root=$current_dir
+    document_root=$app_dir
   fi
 fi
 
-if [[ -z $db_server ]]; then
+if [ ! $db_server ]; then
   echo
   read -p "MySQL Hostname [127.0.0.1]: " db_server
   if [[ ! $db_server ]]; then
@@ -111,66 +111,75 @@ if [[ -z $db_server ]]; then
   fi
 fi
 
-if [[ -z $db_username ]]; then
+while [ ! $db_username ]; do
   echo
   read -p "MySQL Username [root]: " db_username
-  if [[ ! $db_username ]]; then
+  if [ ! $db_username ]; then
     db_username="root"
   fi
-fi
 
-if [[ -z "$db_password" ]]; then
   echo
-  read -p "MySQL Password for '$db_username': " db_password
-fi
+  read -sp "MySQL Password for '$db_username': " db_password
 
-while [[ ! $db_database ]]; do
-  echo
-  read -p "MySQL Database: " db_database
-done
-
-if [[ -x mysql ]]; then
-  if [[ ! "$(mysql -h $db_server -u $db_username -p $db_password -e 'use mydbname')" ]]; then
-    while [[ ! $createdb =~ ^[yYnN]{1}$ ]]; do
-      read -p "Database does not exist. Shall we create it? [y/n]: " createdb
-    done
-    if [[ $createdb =~ ^[yY]{1}$ ]]; then
-      create database `$db_database` | mysql -h $db_server -u $db_username -p $db_password
+  if [[ -x $(which mysql) ]]; then
+    echo
+    echo
+    echo "Testing MySQL credentials..."
+    if [[ $(mysql --host="$db_server" --user="$db_username" --password="$db_password" --execute="SHOW DATABASES;") ]]; then
+      echo " [OK] Connection success"
+    else
+      db_username=
     fi
   fi
-fi
+done
 
-if [[ -z $db_prefix ]]; then
+while [ ! $db_database ]; do
+  echo
+  mysql --host="$db_server" --user="$db_username" --password="$db_password" -e "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME NOT LIKE 'INFORMATION_SCHEMA'"
+  echo
+  read -p "MySQL Database: " db_database
+
+  if [ ! $db_database ]; then
+    if [[ -x $(which mysql) ]]; then
+      if [[ ! $(mysql --host="$db_server" --user="$db_username" --password="$db_password" -e "SHOW DATABASES LIKE '$db_database';") ]]; then
+        echo " [Error] No such database"
+        db_database=
+      fi
+    fi
+  fi
+done
+
+if [ ! $db_prefix ]; then
   echo
   read -p "MySQL Table Prefix [lc_]: " db_prefix
-  if [[ ! $db_prefix ]]; then
+  if [ ! $db_prefix ]; then
     db_prefix="lc_"
   fi
 fi
 
-if [[ -z $db_collation ]]; then
+if [ ! $db_collation ]; then
   echo
-  read -p "MySQL Collation [utf8_swedish_ci]: " db_collation
-  if [[ ! $db_collation ]]; then
-    db_collation="utf8_swedish_ci"
+  read -p "MySQL Collation [utf8mb4_swedish_ci]: " db_collation
+  if [ ! $db_collation ]; then
+    db_collation="utf8mb4_swedish_ci"
   fi
 fi
 
-if [[ $http_client == "wget" ]]; then
-  current_timezone="$(wget -qO- https://ipapi.co/timezone)"
-elif [[ $http_client == "curl" ]]; then
-  current_timezone="$(curl -s https://ipapi.co/timezone)"
+if [ $http_client == "curl" ]; then
+  current_timezone=$(wget -qO- https://ipapi.co/timezone)
+elif [ $http_client == "wget" ]; then
+  current_timezone=$(curl -s https://ipapi.co/timezone)
 fi
 
-if [[ -z $timezone ]]; then
+if [ -z $timezone ]; then
   echo
   read -p "Store Timezone [$current_timezone]: " timezone
-  if [[ ! $timezone ]]; then
+  if [ ! $timezone ]; then
     timezone=$current_timezone
   fi
 fi
 
-if [[ -z $admin_folder ]]; then
+if [ ! $admin_folder ]; then
   echo
   read -p "Admin Folder Name [admin]: " admin_folder
   if [[ ! $admin_folder ]]; then
@@ -178,23 +187,24 @@ if [[ -z $admin_folder ]]; then
   fi
 fi
 
-if [[ -z $admin_username ]]; then
+if [ ! $admin_username ]; then
   echo
   read -p "Admin Username [admin]: " admin_username
-  if [[ ! $admin_username ]]; then
+  if [ ! $admin_username ]; then
     admin_username=admin
   fi
 fi
 
-while [[ -z $admin_password ]]; do
+while [ ! $admin_password ]; do
   echo
-  read -p "Admin Password: " admin_password
+  read -sp "Desired password for user '$admin_username': " admin_password
+  echo
 done
 
-if [[ -z $development_type ]]; then
+if [ ! $development_type ]; then
   echo
   read -p "Development Type (standard|advanced) [standard]: " development_type
-  if [[ ! $development_type ]]; then
+  if [ ! $development_type ]; then
     development_type=standard
   fi
 fi
@@ -238,12 +248,10 @@ cd "$app_dir"
 
 # Download LiteCart
 echo "Downloading latest version of LiteCart..."
-if [[ $http_client == "wget" ]]; then
-  wget -qO litecart.zip "https://www.litecart.net/en/downloading?action=get&version=latest"
-elif [[ $http_client == "curl" ]]; then
+if [ $http_client == "curl" ]; then
   curl -so litecart.zip "https://www.litecart.net/en/downloading?action=get&version=latest"
-else
-  echo "Could not find either curl or wget, please install one." >&2
+elif [ $http_client == "wget" ]; then
+  wget -qO litecart.zip "https://www.litecart.net/en/downloading?action=get&version=latest"
 fi
 
 if [ ! -f litecart.zip ]; then
@@ -253,26 +261,28 @@ fi
 # Extract application directory
 echo "Extracting files..."
 unzip litecart.zip "public_html/*"
-mv public_html/* ./
+mv -f public_html/* ./
 
 # Remove leftovers
 echo "Cleaning up..."
-rmdir public_html/
-rm litecart.zip
+rm -rf public_html/
+rm -f litecart.zip
+
+cd "install/"
 
 echo "Executing installation..."
-php install/install.php \
-  --document_root=\"$document_root\" \
+php install.php \
+  --document_root="$document_root" \
   --db_server=$db_server \
   --db_database=$db_database \
   --db_username=$db_username \
-  --db_password=\"$db_password\" \
+  --db_password="$db_password" \
   --db_prefix=$db_prefix \
   --db_collation=$db_collation \
-  --timezone=\"$timezone\" \
+  --timezone="$timezone" \
   --admin_folder=$admin_folder \
   --admin_username=$admin_username \
-  --admin_password=\"$admin_password\" \
+  --admin_password="$admin_password" \
   --development_type=$development_type
 
 # Return to current directory
