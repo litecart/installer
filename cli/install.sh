@@ -68,13 +68,15 @@ else
   exit;
 fi
 
+# Welcome
 clear
 
 echo "##########################"
 echo "##  LiteCart Installer  ##"
 echo "##########################"
 
-while [ ! $app_dir ]; do
+# Set application path
+while [ ! "$app_dir" ]; do
   echo
   read -p "Installation folder [$current_dir]: " app_dir
   if [[ ! $app_dir ]]; then
@@ -95,7 +97,8 @@ while [ ! $app_dir ]; do
   fi
 done
 
-if [ ! $document_root ]; then
+# Define document root
+if [ ! "$document_root" ]; then
   echo
   read -p "Document Root for '$app_dir' [$app_dir]: " document_root
   if [[ ! $document_root ]]; then
@@ -103,6 +106,16 @@ if [ ! $document_root ]; then
   fi
 fi
 
+# Detect MySQL binary
+if [[ -x $(which mariadb 2>/dev/null) ]]; then
+  db_daemon="mariadb"
+elif [[ -x $(which mysql 2>/dev/null) ]]; then
+  db_daemon="mysql"
+else
+  db_daemon=
+fi
+
+# Set MySQL hostname
 if [ ! $db_server ]; then
   echo
   read -p "MySQL Hostname [127.0.0.1]: " db_server
@@ -111,6 +124,7 @@ if [ ! $db_server ]; then
   fi
 fi
 
+# Set MySQL username and password
 while [ ! $db_username ]; do
   echo
   read -p "MySQL Username [root]: " db_username
@@ -121,11 +135,12 @@ while [ ! $db_username ]; do
   echo
   read -sp "MySQL Password for '$db_username': " db_password
 
-  if [[ -x $(which mysql) ]]; then
+  # Test MySQL credentials
+  if [ $db_daemon ]; then
     echo
     echo
     echo "Testing MySQL credentials..."
-    if [[ $(mysql --host="$db_server" --user="$db_username" --password="$db_password" --execute="SHOW DATABASES;") ]]; then
+    if [[ $($db_daemon --host="$db_server" --user="$db_username" --password="$db_password" --execute="SHOW DATABASES;") ]]; then
       echo " [OK] Connection success"
     else
       db_username=
@@ -133,22 +148,27 @@ while [ ! $db_username ]; do
   fi
 done
 
+# Set MySQL database
 while [ ! $db_database ]; do
-  echo
-  mysql --host="$db_server" --user="$db_username" --password="$db_password" -e "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME NOT LIKE 'INFORMATION_SCHEMA'"
+
+  if [ $db_daemon ]; then
+    echo
+    $db_daemon --host="$db_server" --user="$db_username" --password="$db_password" -e "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME NOT LIKE 'INFORMATION_SCHEMA'"
+  fi
+
   echo
   read -p "MySQL Database: " db_database
 
-  if [ ! $db_database ]; then
-    if [[ -x $(which mysql) ]]; then
-      if [[ ! $(mysql --host="$db_server" --user="$db_username" --password="$db_password" -e "SHOW DATABASES LIKE '$db_database';") ]]; then
-        echo " [Error] No such database"
-        db_database=
-      fi
+  # Test MySQL database
+  if [ $db_daemon ] && [ ! $db_database ]; then
+    if [[ ! $($db_daemon --host="$db_server" --user="$db_username" --password="$db_password" -e "SHOW DATABASES LIKE '$db_database';") ]]; then
+      echo " [Error] No such database"
+      db_database=
     fi
   fi
 done
 
+# Set MySQL table prefix
 if [ ! $db_prefix ]; then
   echo
   read -p "MySQL Table Prefix [lc_]: " db_prefix
@@ -157,6 +177,7 @@ if [ ! $db_prefix ]; then
   fi
 fi
 
+# Set MySQL default collation
 if [ ! $db_collation ]; then
   echo
   read -p "MySQL Collation [utf8mb4_swedish_ci]: " db_collation
@@ -165,17 +186,31 @@ if [ ! $db_collation ]; then
   fi
 fi
 
+# Get country via IP API
 if [ $http_client == "curl" ]; then
-  current_timezone=$(wget -qO- https://ipapi.co/timezone)
+  current_country=$(curl -s https://ipapi.co/country)
 elif [ $http_client == "wget" ]; then
-  current_timezone=$(curl -s https://ipapi.co/timezone)
+  current_country=$(wget -qO- https://ipapi.co/country)
 fi
 
+# Set store country
 while [[ ! $country =~ ^[A-Z]{2}$ ]]; do
   echo
-  read -p "Store Country Code (Example: US): " country
+  read -p "Store Country Code [$current_country]: " country
+
+  if [[ ! $country ]]; then
+    country=$current_country
+  fi
 done
 
+# Get timezone via IP API
+if [ $http_client == "curl" ]; then
+  current_timezone=$(curl -s https://ipapi.co/timezone)
+elif [ $http_client == "wget" ]; then
+  current_timezone=$(wget -qO- https://ipapi.co/timezone)
+fi
+
+# Set store timezone
 if [ ! $timezone ]; then
   echo
   read -p "Store Timezone [$current_timezone]: " timezone
@@ -184,6 +219,7 @@ if [ ! $timezone ]; then
   fi
 fi
 
+# Set backend folder name
 if [ ! $admin_folder ]; then
   echo
   read -p "Admin Folder Name [admin]: " admin_folder
@@ -192,6 +228,7 @@ if [ ! $admin_folder ]; then
   fi
 fi
 
+# Set backend username
 if [ ! $admin_username ]; then
   echo
   read -p "Admin Username [admin]: " admin_username
@@ -200,12 +237,14 @@ if [ ! $admin_username ]; then
   fi
 fi
 
+# Set backend password
 while [ ! $admin_password ]; do
   echo
   read -sp "Desired password for user '$admin_username': " admin_password
   echo
 done
 
+# Set development mode
 if [ ! $development_type ]; then
   echo
   read -p "Development Type (standard|advanced) [standard]: " development_type
@@ -214,6 +253,7 @@ if [ ! $development_type ]; then
   fi
 fi
 
+# Show summary
 clear
 
 echo
