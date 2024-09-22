@@ -33,6 +33,9 @@ while [[ $# -gt 0 ]]; do
     --timezone*)
       timezone="${1#*=}"
       ;;
+    --country*)
+      country="${1#*=}"
+      ;;
     --admin_folder*)
       admin_folder="${1#*=}"
       ;;
@@ -47,7 +50,27 @@ while [[ $# -gt 0 ]]; do
       ;;
     --help|-h)
       echo
-      echo "  This could be a meaningful help message in the future ;)"
+      echo LiteCart CLI Installer
+      echo "Copyright (c) $(date +"%Y") LiteCart AB"
+      echo  "https://www.litecart.net/"
+      echo  "Usage: install.sh [options]"
+      echo  "Options:"
+      echo  "  --app_dir            Set application directory"
+      echo  "  --document_root      Set document root"
+      echo  "  --db_server          Set database hostname (Default: 127.0.0.1)"
+      echo  "  --db_username        Set database username"
+      echo  "  --db_password        Set database user password"
+      echo  "  --db_database        Set database name"
+      echo  "  --db_table_prefix    Set database table prefix (Default: lc_)."
+      echo  "  --db_collation       Set database collation (Default: utf8_swedish_ci)"
+      echo  "  --timezone           Set timezone e.g. Europe/London"
+      echo  "  --country            Set country e.g. US"
+      echo  "  --admin_folder       Set admin folder name (Default: admin)"
+      echo  "  --username           Set admin username"
+      echo  "  --password           Set admin user password"
+      echo  "  --development_type   Set development type 'standard' or 'advanced' (Default: standard)"
+      echo
+      echo Example: install.sh --app_dir=/var/www/html --db_username=litecart --db_password=secret
       exit
       ;;
     *)
