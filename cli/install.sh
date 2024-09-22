@@ -54,6 +54,7 @@ while [[ $# -gt 0 ]]; do
       echo "Copyright (c) $(date +"%Y") LiteCart AB"
       echo  "https://www.litecart.net/"
       echo  "Usage: install.sh [options]"
+      echo
       echo  "Options:"
       echo  "  --app_dir            Set application directory"
       echo  "  --document_root      Set document root"
@@ -70,7 +71,9 @@ while [[ $# -gt 0 ]]; do
       echo  "  --password           Set admin user password"
       echo  "  --development_type   Set development type 'standard' or 'advanced' (Default: standard)"
       echo
-      echo Example: install.sh --app_dir=/var/www/html --db_username=litecart --db_password=secret
+      echo "Example:"
+      echo "  install.sh --app_dir=/var/www/html --db_username=litecart --db_password=secret"
+      echo
       exit
       ;;
     *)
