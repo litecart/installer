@@ -342,21 +342,30 @@ rm -f litecart.zip
 
 cd "install/"
 
-echo "Executing installation..."
-php install.php \
-  --document_root="$document_root" \
+# Set install command
+install_command="php install.php \
+  --document_root=\"$document_root\" \
   --db_server=$db_server \
   --db_database=$db_database \
   --db_username=$db_username \
-  --db_password="$db_password" \
+  --db_password=\"$db_password\" \
   --db_prefix=$db_prefix \
   --db_collation=$db_collation \
   --country=$country \
-  --timezone="$timezone" \
+  --timezone=\"$timezone\" \
   --admin_folder=$admin_folder \
   --admin_username=$admin_username \
-  --admin_password="$admin_password" \
-  --development_type=$development_type
+  --admin_password=\"$admin_password\" \
+  --development_type=$development_type"
+
+# Print the install command
+echo
+echo "Executing install command:"
+echo "$install_command"
+echo
+
+# Execute the install command
+$install_command
 
 # Return to current directory
 cd "$current_dir"
