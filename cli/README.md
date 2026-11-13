@@ -11,13 +11,17 @@ To install the latest version of LiteCart straight from your command line interf
 
 1. Open a terminal window and exececute the following command:
 
-  **curl users**
+**curl users**
 
-    bash -c "$(curl https://raw.githubusercontent.com/litecart/installer/master/cli/install.sh)"
+```bash
+bash -c "$(curl https://raw.githubusercontent.com/litecart/installer/master/cli/install.sh)"
+```
 
-  **wget users**
+**wget users**
 
-    bash -c "$(wget -O- https://raw.githubusercontent.com/litecart/installer/master/cli/install.sh)"
+```bash
+bash -c "$(wget -O- https://raw.githubusercontent.com/litecart/installer/master/cli/install.sh)"
+```
 
 2. Follow the instructions on the screen.
 
@@ -27,16 +31,18 @@ Please note: Windows users require a runtime environment like [MinGW-w64](https:
 
 You can predefine values passed to the install script:
 
-    bash -c "$(wget -O- https://raw.githubusercontent.com/litecart/installer/master/cli/install.sh)" \
-      --app_dir=/var/www/litecart/public_html/ \
-      --document_root=/var/www/litecart/public_html \
-      --db_server=localhost \
-      --db_user=johndoe \
-      --db_password=mycatsname \
-      --db_database=mylitecartdb \
-      --db_prefix=lc_ \
-      --timezone=Europe/London \
-      --admin_folder=admin \
-      --admin_user=admin \
-      --admin_password=mydogsname \
-      --development_type=standard
+```bash
+bash -c "$(curn https://raw.githubusercontent.com/litecart/installer/master/cli/install.sh)" \
+  --app_dir=/var/www/litecart/public_html/ \
+  --document_root=/var/www/litecart/public_html \
+  --db_server=localhost \
+  --db_user=johndoe \
+  --db_password=mycatsname \
+  --db_database=mylitecartdb \
+  --db_table_prefix=lc_ \
+  --timezone=Europe/London \
+  --admin_folder=admin \
+  --username=admin \
+  --password=mydogsname \
+  --development_type=standard
+```

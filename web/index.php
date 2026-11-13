@@ -2,21 +2,23 @@
 
   ob_start();
 
-  error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
+  error_reporting(PHP_VERSION_ID < 50400 ? E_ALL | E_STRICT : E_ALL);
 
   ini_set('display_errors', 'On');
   ini_set('display_html_errors', 'Off');
+
+  ignore_user_abort(true);
 
   header('Content-Type: text/plain; charset=UTF-8');
 
   try {
 
-    if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-      throw new Exception('You need at minimum PHP 5.4 for installing LiteCart');
+    if (PHP_VERSION_ID < 50600) {
+      throw new Exception('You need at minimum PHP 5.6+ for installing LiteCart');
     }
 
     if (!extension_loaded('zip')) {
-      throw new Exception('This installer needs the PHP extension Zip installed in your PHP environment');
+      throw new Exception('The installer needs the PHP extension Zip installed, see your php.ini file.');
     }
 
     echo "Downloading LiteCart from the official website...\n";
@@ -72,7 +74,7 @@
     echo "\nExtraction complete!\n\n";
 
     if (php_sapi_name() == 'cli') {
-      echo "\nAccess https://yourdomain.tld/install/ from your web browser to begin the installation or type `php install/install.php --help` for command line options.";
+      echo "\nGo to https://yourdomain.tld/install/ from your web browser to begin the installation.";
       exit;
     }
 
@@ -82,4 +84,5 @@
   } catch (Exception $e) {
     if (is_file($tmpfile)) unlink($tmpfile);
     echo 'Error: '. $e->getMessage();
+    exit(1);
   }

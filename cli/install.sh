@@ -24,8 +24,8 @@ while [[ $# -gt 0 ]]; do
     --db_password*)
       db_password="${1#*=}"
       ;;
-    --db_prefix*)
-      db_prefix="${1#*=}"
+    --db_table_prefix*)
+      db_table_prefix="${1#*=}"
       ;;
     --db_collation*)
       db_collation="${1#*=}"
@@ -39,11 +39,11 @@ while [[ $# -gt 0 ]]; do
     --admin_folder*)
       admin_folder="${1#*=}"
       ;;
-    --admin_username*)
-      admin_username="${1#*=}"
+    --username*)
+      username="${1#*=}"
       ;;
-    --admin_password*)
-      admin_password="${1#*=}"
+    --password*)
+      password="${1#*=}"
       ;;
     --development_type*)
       development_type="${1#*=}"
@@ -195,11 +195,11 @@ while [ ! $db_database ]; do
 done
 
 # Set MySQL table prefix
-if [ ! $db_prefix ]; then
+if [ ! $db_table_prefix ]; then
   echo
-  read -p "MySQL Table Prefix [lc_]: " db_prefix
-  if [ ! $db_prefix ]; then
-    db_prefix="lc_"
+  read -p "MySQL Table Prefix [lc_]: " db_table_prefix
+  if [ ! $db_table_prefix ]; then
+    db_table_prefix="lc_"
   fi
 fi
 
@@ -255,18 +255,18 @@ if [ ! $admin_folder ]; then
 fi
 
 # Set backend username
-if [ ! $admin_username ]; then
+if [ ! $username ]; then
   echo
-  read -p "Admin Username [admin]: " admin_username
-  if [ ! $admin_username ]; then
-    admin_username=admin
+  read -p "Admin Username [admin]: " username
+  if [ ! $username ]; then
+    username=admin
   fi
 fi
 
 # Set backend password
-while [ ! $admin_password ]; do
+while [ ! $password ]; do
   echo
-  read -sp "Desired password for user '$admin_username': " admin_password
+  read -sp "Desired password for user '$username': " password
   echo
 done
 
@@ -293,14 +293,14 @@ echo
 echo "MySQL Hostname: $db_server"
 echo "MySQL Username: $db_username"
 echo "MySQL Database: $db_database"
-echo "MySQL Table Prefix: $db_prefix"
+echo "MySQL Table Prefix: $db_table_prefix"
 echo "MySQL Collation: $db_collation"
 echo
 echo "Store Country: $country"
 echo "Time Zone: $timezone"
 echo
 echo "Admin Folder: $admin_folder"
-echo "Admin User: $admin_username"
+echo "Admin Username: $username"
 echo "Admin Password: ********"
 echo
 echo "Development Type: $development_type"
@@ -349,13 +349,13 @@ install_command="php install.php \
   --db_database=$db_database \
   --db_username=$db_username \
   --db_password=\"$db_password\" \
-  --db_prefix=$db_prefix \
+  --db_table_prefix=$db_table_prefix \
   --db_collation=$db_collation \
   --country=$country \
   --timezone=\"$timezone\" \
   --admin_folder=$admin_folder \
-  --admin_username=$admin_username \
-  --admin_password=\"$admin_password\" \
+  --username=$username \
+  --password=\"$password\" \
   --development_type=$development_type"
 
 # Print the install command
