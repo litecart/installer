@@ -65,7 +65,7 @@ while [[ $# -gt 0 ]]; do
       echo  "  --db_table_prefix    Set database table prefix (Default: lc_)."
       echo  "  --db_collation       Set database collation (Default: utf8_swedish_ci)"
       echo  "  --timezone           Set timezone e.g. Europe/London"
-      echo  "  --country            Set country e.g. US"
+      echo  "  --country_code       Set country e.g. US"
       echo  "  --admin_folder       Set admin folder name (Default: admin)"
       echo  "  --username           Set admin username"
       echo  "  --password           Set admin user password"
@@ -220,12 +220,12 @@ elif [ $http_client == "wget" ]; then
 fi
 
 # Set store country
-while [[ ! $country =~ ^[A-Z]{2}$ ]]; do
+while [[ ! $country_code =~ ^[A-Z]{2}$ ]]; do
   echo
-  read -p "Store Country Code [$current_country]: " country
+  read -p "Store Country Code [$current_country]: " country_code
 
-  if [[ ! $country ]]; then
-    country=$current_country
+  if [[ ! $country_code ]]; then
+    country_code=$current_country
   fi
 done
 
@@ -296,7 +296,7 @@ echo "MySQL Database: $db_database"
 echo "MySQL Table Prefix: $db_table_prefix"
 echo "MySQL Collation: $db_collation"
 echo
-echo "Store Country: $country"
+echo "Store Country Code: $country_code"
 echo "Time Zone: $timezone"
 echo
 echo "Admin Folder: $admin_folder"
@@ -351,7 +351,7 @@ install_command="php install.php \
   --db_password=\"$db_password\" \
   --db_table_prefix=$db_table_prefix \
   --db_collation=$db_collation \
-  --country=$country \
+  --country_code=$country_code \
   --timezone=\"$timezone\" \
   --admin_folder=$admin_folder \
   --username=$username \
